@@ -1,18 +1,93 @@
 <!doctype html>
 <html>
 	<head>
-		<title></title>
+		<title>Search Web</title>
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+		<style type="text/css">
+		#search{
+			width: 50%;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		.searchbtn{
+			width:25%;
+		}
+		.container{
+			margin-right: auto;
+			margin-left: auto;
+			width: 80%;
+			text-align: center;
+		}
+		.result-container{
+			width: 60%;
+			text-align: left;
+		}
+		.result-container h2 {
+			font-size: 20px;
+		}
+		.link{
+			text-overflow: ellipsis;
+			text-decoration: underline;
+			white-space: nowrap;
+    		overflow: hidden;
+		}
+		.heading,.desc,.link{
+			text-align: left;
+		}
+		</style>
 	</head>
 <body>
+	<div class="container">
+		<br>
+		<input type="text" id="search" class="form-control" autofocus><br>
+		<input type="submit" value="search" class="btn btn-primary btn-lg searchbtn">
+	</div>
+	<br>
+	<br>
+	<div class="result-container container">
 
-
-
-	
+	</div>
 	<script type="text/javascript" src="scripts/jquery-2.0.2.min.js"></script>
 	<script type="text/javascript" src="scripts/bootstrap.min.js"></script>
 	<script type="text/javascript">
-
+		$(document).ready(function() {
+			$(".searchbtn").click(function(){
+				var value = $("#search").val();
+				$.ajax({
+					type : 'GET',
+					crossDomain : true,
+					dataType : 'jsonp',
+					url : 'http://socialmention.com/search?q='+value+'&f=jsonp&t=all',
+					success:function(data){
+						console.log(data);
+						var i = 0;
+						$.each(data,function(key,value){
+						while(i<5)
+						{
+						var date = new Date(timestamp*1000);
+						$(".result-container").append
+						("<div class='container' style='margin-bottom:30px'>" + 
+						"<h2 class='heading'>"+data.items[i].title+ "</h2>" + 
+						"" + "<span class='blogtime'>"+date+"</span>" +
+						"" + "<div class='desc'>" +data.items[i].description+ "</div>" +
+						"" + "<div class='link'><a href='"+data.items[i].link+"'target='_blank'>" +data.items[i].link+  
+						"<a/>" + "" + "</div>" + "</div>");
+						console.log(data.items[i].description);
+						i++;
+						var date = "";
+						}
+						});
+					},
+					error:function(err){
+						console.log(err);
+					}
+				});
+			});
+		});
+		function timeConvert(timestamp){
+			
+			return date;
+		}
 	</script>
 </body>
 </html>
